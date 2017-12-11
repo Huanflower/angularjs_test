@@ -28,7 +28,8 @@ angular.module('app',[])
 					// 将任务添加到任务列表中
 					$scope.taskList.push({
 						name: $scope.task,
-						isCompleted: false // 代表当前任务是否完成
+						isCompleted: false, // 代表当前任务是否完成
+						isEditing: false // 当前任务是否处于可编辑状态
 					});
 
 					// 清空文本框
@@ -80,6 +81,89 @@ angular.module('app',[])
 			return nums;
 
 		}
+
+		/*
+			删除任务
+
+				1.给删除按钮添加点击事件
+				2.获取到当前点击的任务
+				3.从任务列表中将任务删除
+
+		*/
+	
+		$scope.deleteTask = function(index){
+
+			$scope.taskList.splice(index,1);
+
+		}
+
+
+		/*
+			批量删除已完成任务
+
+				1.给删除按钮添加点击事件
+				2.循环任务列表 
+				3.判断当前任务是否是已经完成的任务
+				4.如果判断成立 删除当前任务
+
+		 */
+		
+		/* true    false
+
+		['睡觉','打豆豆']
+
+			0      1*/
+		
+		$scope.clearCompletedTask = function(){
+
+			for(var i=0;i<$scope.taskList.length;i++){
+
+				if($scope.taskList[i].isCompleted){
+
+					$scope.taskList.splice(i,1);
+
+					i--;
+
+				}
+
+			}
+
+		}
+
+
+		/*
+			修改任务名字
+				1.给任务名称添加双击事件(ng-dblclick)
+				2.显示编辑框
+					当任务处于可编辑状态的时候 添加editing类名即可
+					当任务处于不可编辑状态的时候 删除editing类名即可
+				3.将任务名称显示在编辑框内部
+				4.在编辑框离开焦点的时候 保存任务名称
+
+		*/
+	
+		$scope.modifyTaskName = function(task){
+
+			// 将所有任务设置成不可编辑状态
+			for(var i=0;i<$scope.taskList.length;i++){
+
+				$scope.taskList[i].isEditing = false;
+
+			}
+
+			// 将当前任务设置成可编辑状态
+			task.isEditing = true;
+
+		}
+
+
+		$scope.saveTaskName = function(task){
+
+			task.isEditing = false;
+
+		}
+
+
 
 
 	}])

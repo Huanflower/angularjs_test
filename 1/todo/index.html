@@ -18,14 +18,14 @@
 				<input type="checkbox" id="toggle-all">
 				<label for="toggle-all">Mark all as complete</label>
 				<ul id="todo-list">
-					<li ng-repeat="item in taskList" ng-class="{'completed': item.isCompleted }">
+					<li ng-repeat="item in taskList" ng-class="{'completed': item.isCompleted,'editing': item.isEditing }">
 						<div class="view">
 							<input class="toggle" type="checkbox" ng-model="item.isCompleted">
-							<label ng-bind="item.name"></label>
-							<button class="destroy"></button>
+							<label ng-bind="item.name" ng-dblclick="modifyTaskName(item)"></label>
+							<button class="destroy" ng-click="deleteTask($index)"></button>
 						</div>
 						<form>
-							<input class="edit">
+							<input class="edit" ng-model="item.name" ng-blur="saveTaskName(item)">
 						</form>
 					</li>
 				</ul>
@@ -45,7 +45,7 @@
 						<a href="javascript:;">Completed</a>
 					</li>
 				</ul>
-				<button id="clear-completed">Clear completed</button>
+				<button id="clear-completed" ng-click="clearCompletedTask()">Clear completed</button>
 			</footer>
 		</section>
 		<script src="node_modules/angular/angular.min.js"></script>
